@@ -1,24 +1,21 @@
-import "./App.css";
 import React from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
-import Sort from "./Sort";
-import ImageSelection from "./ImageSelection";
+import SelectImages from "../SelectImages";
+import ArrangeImages from "../ArrangeImages";
 
-export default function App() {
+export default function Routes() {
   return (
     <Router>
       <div>
         <nav>
           <ul>
             <li>
-              <Link to="/">Select</Link>
+              <Link to="/">Homepage</Link>
             </li>
+
             <li>
-              <Link to="/photogrid">Photo Grid</Link>
-            </li>
-            <li>
-              <Link to="/sort">Sort</Link>
+              <Link to="/sort">Arrange Images</Link>
             </li>
           </ul>
         </nav>
@@ -26,14 +23,11 @@ export default function App() {
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Switch>
-          {/* <Route ecact path="/photogrid">
-            <About />
-          </Route>*/}
           <Route exact path="/">
-            <ImageSelection />
-          </Route>{" "}
-          <Route exact path="/sort">
-            <Sort />
+            <SelectImages />
+          </Route>
+          <Route exact path="/arrange-images">
+            <ArrangeImages />
           </Route>
         </Switch>
       </div>

@@ -1,46 +1,48 @@
-import "./App.css";
-import Gallery from "react-photo-gallery";
-import React, { useState, useCallback, useEffect } from "react";
-import SelectedImage from "./SelectedImage";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+/**
+ * This is the first page that loads and display all the uploaded images *
+ */
 
-function ImageSelection() {
+import { Link } from "react-router-dom";
+import Gallery from "react-photo-gallery";
+import SelectedImage from "./SelectedImage";
+import React, { useState, useCallback, useEffect } from "react";
+
+function SelectImages() {
   const [items, setItems] = useState([]);
-  // console.log("items: ", items);
   const [selectedItems, setSelectedItems] = useState([]);
-  console.log("selectedItemsState: ", selectedItems);
   const [showButton, setShowButton] = useState(false);
 
+  /**
+   *
+   * Adds a selected image to the selection list.   *
+   * @param {integer} index the index of the selected image in the items array
+   * @return {Array} selectedItems[] the list of selected images with all their proerties
+   *
+   */
   const add = (index) => {
-    console.log("add index: ", index);
-    console.log("selectedItems:25 ", selectedItems);
     if (selectedItems.includes(index)) {
-      //remove
-      console.log("remove: ");
+      //remove from the selection list
       setSelectedItems(selectedItems.filter((item) => item !== index));
     } else if (selectedItems.length === 8) {
-      console.log("selectedItems.length === 8: ");
-      console.log("LIMIT REACHED");
+      //disable and proceed to sorting page
+      window.scrollTo(0, 0);
       setSelectedItems((selectedItems) => [...selectedItems, items[index]]);
       setShowButton(true);
     } else {
-      // debugger;
-      console.log("else: ");
-      console.log("items[index]", items[index]);
+      //add to the selection list
       setSelectedItems((selectedItems) => [...selectedItems, items[index]]);
     }
   };
 
-  const remove = (index) => {
-    console.log("removeindex: ", index);
-    const item = selectedItems.indexOf(index);
-    setSelectedItems(selectedItems.splice(item, 1));
-  };
-
+  /**
+   *
+   * Renders a selectable image.   *
+   * @param {object} { index, left, top, key, photo } required for the image selection
+   * @return {React} returns a selectable React element that contains the image
+   *
+   */
   const imageRenderer = useCallback(
     ({ index, left, top, key, photo }) => {
-      // setSelectedItems(selectedItems);
-      // console.log("selectedItems: cbk", selectedItems);
       return (
         <SelectedImage
           key={key}
@@ -52,13 +54,19 @@ function ImageSelection() {
           setSelectedItems={setSelectedItems}
           selectedItems={selectedItems}
           add={add}
-          remove={remove}
         />
       );
     },
     [selectedItems, setSelectedItems, add, items]
   );
 
+  /**
+   *
+   * Fetch the imagelist array from the image api
+   * @param {} none
+   * @return {array} returns an array of image objects
+   *
+   */
   const fetchImages = () => {
     return fetch(
       "https://dev-pb-apps.s3-eu-west-1.amazonaws.com/collection/CHhASmTpKjaHyAsSaauThRqMMjWanYkQ.json",
@@ -82,28 +90,22 @@ function ImageSelection() {
 
       return setItems(photoArray);
     });
-    // setSelectedItems(selectedItems);
   }, [selectedItems]);
 
-  const showArray = () => {
-    console.log("selectedItems:Arr ", selectedItems);
-  };
   return (
     <div className="App">
       {showButton && (
-        // <button onClick={showArray}></button>
-
-        <Link
-          to={{
-            pathname: "/sort",
-            search: "?sort=name",
-            hash: "#selection",
-            state: { selectedPhotos: selectedItems },
-          }}
-        >
-          {" "}
-          NOW SORT THE SELECTED IMAGES{" "}
-        </Link>
+        <div className="button btn btn-primary">
+          <Link
+            to={{
+              pathname: "/arrange-images",
+              hash: "#selection",
+              state: { selectedPhotos: selectedItems },
+            }}
+          >
+            Now lets Sort the chosen images
+          </Link>
+        </div>
       )}
       <div className={showButton === true ? "hide" : "show"}>
         <Gallery photos={items} renderImage={imageRenderer} />
@@ -112,4 +114,4 @@ function ImageSelection() {
   );
 }
 
-export default ImageSelection;
+export default SelectImages;

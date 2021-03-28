@@ -1,13 +1,77 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.hide {
+  /* display: none; */
+  pointer-events: none;
+
+  /* for "disabled" effect */
+  opacity: 0.5;
+  background: #ccc;
+}
+.show {
+  display: block;
+}
+
+.button {
+  background-color: white;
+  display: block;
+  width: 600px;
+  position: relative;
+  margin: auto;
+  top: 30vw;
+  opacity: 1;
+  border-radius: 56px;
+  z-index: 1000;
+}
+
+.button a {
+  text-align: center;
+  color: black;
+  font-size: 36px;
+  background-color: deepskyblue;
+  display: block;
+  width: 100%;
+  opacity: 1;
+  border-radius: 56px;
+  border: 20px solid white;
+  padding: 25px;
+  text-decoration: none;
+}
+
+.button-save {
+  background-color: white;
+  display: block;
+  width: 600px;
+  /* position: relative; */
+  margin: auto;
+  top: 30vw;
+  opacity: 1;
+  border-radius: 56px;
+  z-index: 1000;
+}
+
+.button-save button {
+  text-align: center;
+  color: black;
+  font-size: 36px;
+  background-color: deepskyblue;
+  display: block;
+  width: 100%;
+  opacity: 1;
+  border-radius: 56px;
+  border: 20px solid white;
+  padding: 25px;
+  text-decoration: none;
 }
