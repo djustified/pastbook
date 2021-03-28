@@ -19,8 +19,9 @@ function SelectImages() {
    * @return {Array} selectedItems[] the list of selected images with all their proerties
    *
    */
+
   const add = (index) => {
-    if (selectedItems.includes(index)) {
+    if (isItemAlreadySelected(index) === true) {
       //remove from the selection list
       setSelectedItems(selectedItems.filter((item) => item !== index));
     } else if (selectedItems.length === 8) {
@@ -32,6 +33,23 @@ function SelectImages() {
       //add to the selection list
       setSelectedItems((selectedItems) => [...selectedItems, items[index]]);
     }
+  };
+
+  /**
+   *
+   * check for duplicate selection and remove them from array  *
+   * @param {integer} index the index of the selected image in the items array
+   * @return {boolean} returns if the check passed or failed
+   *
+   */
+
+  const isItemAlreadySelected = (index) => {
+    let existCheck;
+    const getItemFromItemList = items[index];
+    selectedItems.forEach((photoItem) => {
+      return (existCheck = photoItem.id === getItemFromItemList.id);
+    });
+    return existCheck;
   };
 
   /**
@@ -79,6 +97,23 @@ function SelectImages() {
     ).then((response) => response.json());
   };
 
+  /**
+   *
+   * Delete any previously saved image sort selction so a user can start fresh
+   * @return {String} "Ok. deleted all" if success
+   * @return {String} "Something went wrong!" if there was an generic error
+   * @return {String} "Something broke!" if there was a server error
+   *
+   */
+  const deleteExistingSelection = () => {
+    return fetch("http://localhost:3200/api/delete-images", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
+
   useEffect(() => {
     fetchImages().then((photoList) => {
       const photoArray = [];
@@ -90,10 +125,13 @@ function SelectImages() {
 
       return setItems(photoArray);
     });
+    deleteExistingSelection();
   }, [selectedItems]);
 
   return (
     <div className="App">
+      <h2 className="mx-auto">Choose 9 Photos to Generate a photogrid</h2>
+      <h3>Click on any 9 photos to select</h3>
       {showButton && (
         <div className="button btn btn-primary">
           <Link

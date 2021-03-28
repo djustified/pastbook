@@ -11,11 +11,11 @@ export default function Routes() {
         <nav>
           <ul>
             <li>
-              <Link to="/">Homepage</Link>
+              <Link to="/">Choose Photos</Link>
             </li>
 
             <li>
-              <Link to="/sort">Arrange Images</Link>
+              <Link to="/sort">Arrange Photos [PhotoGrid]</Link>
             </li>
           </ul>
         </nav>

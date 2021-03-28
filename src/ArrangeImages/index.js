@@ -23,7 +23,7 @@ function ArrangeImages() {
     state: { selectedPhotos },
   } = useLocation();
 
-  const [items, setItems] = React.useState([selectedPhotos]);
+  const [items, setItems] = React.useState(selectedPhotos);
   console.log("items: ", items);
 
   /**
@@ -39,7 +39,7 @@ function ArrangeImages() {
 
   /**
    *
-   * Fetch the imagelist array from the image api
+   * Fetch the imagelist array from the database api
    * @param {} none
    * @return {array} returns an array of image objects
    *
@@ -54,16 +54,9 @@ function ArrangeImages() {
   };
 
   React.useEffect(() => {
-    // if (selectedPhotos) {
-    // setItems(selectedPhotos);
-    // console.log("selectedPhotos1: ", selectedPhotos);
-    // window.history.replaceState({}, null, null);
-    // console.log("selectedPhotos:2 ", selectedPhotos);
     fetchImages().then((photoList) => {
       return setItems(photoList);
     });
-
-    // saveImages();
   }, []);
 
   /**
@@ -86,8 +79,8 @@ function ArrangeImages() {
   return (
     <div className="App">
       <div>
-        <h2>Sortable Gallery</h2>
-        <h3>Drag photo to Rearrange</h3>
+        <h2 className="mx-auto">This is your Photo Grid</h2>
+        <h3>Drag photos to Rearrange as you wish</h3>
 
         <SortableGallery items={items} onSortEnd={onSortEnd} axis={"xy"} />
         <div className=" button-save btn btn-primary">
