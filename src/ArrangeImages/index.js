@@ -23,7 +23,8 @@ function ArrangeImages() {
     state: { selectedPhotos },
   } = useLocation();
 
-  const [items, setItems] = React.useState([]);
+  const [items, setItems] = React.useState([selectedPhotos]);
+  console.log("items: ", items);
 
   /**
    *
@@ -36,10 +37,34 @@ function ArrangeImages() {
     setItems(arrayMove(items, oldIndex, newIndex));
   };
 
+  /**
+   *
+   * Fetch the imagelist array from the image api
+   * @param {} none
+   * @return {array} returns an array of image objects
+   *
+   */
+  const fetchImages = () => {
+    return fetch("http://localhost:3200/api/get-images", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((response) => response.json());
+  };
+
   React.useEffect(() => {
-    setItems(selectedPhotos);
+    // if (selectedPhotos) {
+    // setItems(selectedPhotos);
+    // console.log("selectedPhotos1: ", selectedPhotos);
+    // window.history.replaceState({}, null, null);
+    // console.log("selectedPhotos:2 ", selectedPhotos);
+    fetchImages().then((photoList) => {
+      return setItems(photoList);
+    });
+
     // saveImages();
-  }, [selectedPhotos]);
+  }, []);
 
   /**
    *
@@ -54,7 +79,7 @@ function ArrangeImages() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(selectedPhotos),
+      body: JSON.stringify(items),
     }).then((response) => response.json());
   };
 
