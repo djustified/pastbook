@@ -5,7 +5,9 @@
 import { Link } from "react-router-dom";
 import Gallery from "react-photo-gallery";
 import SelectedImage from "./SelectedImage";
+import { fetchImages } from "../utils/fetchImages";
 import React, { useState, useCallback, useEffect } from "react";
+import { deleteExistingSelection } from "../utils/deleteExistingSelection";
 
 function SelectImages() {
   const [items, setItems] = useState([]);
@@ -19,7 +21,6 @@ function SelectImages() {
    * @return {Array} selectedItems[] the list of selected images with all their proerties
    *
    */
-
   const add = (index) => {
     if (isItemAlreadySelected(index) === true) {
       //remove from the selection list
@@ -42,7 +43,6 @@ function SelectImages() {
    * @return {boolean} returns if the check passed or failed
    *
    */
-
   const isItemAlreadySelected = (index) => {
     let existCheck;
     const getItemFromItemList = items[index];
@@ -77,42 +77,6 @@ function SelectImages() {
     },
     [selectedItems, setSelectedItems, add, items]
   );
-
-  /**
-   *
-   * Fetch the imagelist array from the image api
-   * @param {} none
-   * @return {array} returns an array of image objects
-   *
-   */
-  const fetchImages = () => {
-    return fetch(
-      "https://dev-pb-apps.s3-eu-west-1.amazonaws.com/collection/CHhASmTpKjaHyAsSaauThRqMMjWanYkQ.json",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    ).then((response) => response.json());
-  };
-
-  /**
-   *
-   * Delete any previously saved image sort selction so a user can start fresh
-   * @return {String} "Ok. deleted all" if success
-   * @return {String} "Something went wrong!" if there was an generic error
-   * @return {String} "Something broke!" if there was a server error
-   *
-   */
-  const deleteExistingSelection = () => {
-    return fetch("http://localhost:3200/api/delete-images", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  };
 
   useEffect(() => {
     fetchImages().then((photoList) => {

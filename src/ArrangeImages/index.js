@@ -6,7 +6,9 @@ import React from "react";
 import arrayMove from "array-move";
 import SortedPhoto from "./SortedPhoto";
 import Gallery from "react-photo-gallery";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { saveSortedImages } from "../utils/saveSortedImages";
+import { fetchSortedImages } from "../utils/fetchSortedImages";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
 
 const SortablePhoto = SortableElement((item) => <SortedPhoto {...item} />);
@@ -37,44 +39,11 @@ function ArrangeImages() {
     setItems(arrayMove(items, oldIndex, newIndex));
   };
 
-  /**
-   *
-   * Fetch the imagelist array from the database api
-   * @param {} none
-   * @return {array} returns an array of image objects
-   *
-   */
-  const fetchImages = () => {
-    return fetch("http://localhost:3200/api/get-images", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((response) => response.json());
-  };
-
   React.useEffect(() => {
-    fetchImages().then((photoList) => {
+    fetchSortedImages().then((photoList) => {
       return setItems(photoList);
     });
   }, []);
-
-  /**
-   *
-   * sends the chosen images to the save api for storing*
-   * @param {array} selectedPhotos the selected and sorted photo array
-   * @return {Array} returns the last stored image array sorted
-   *
-   */
-  const saveImages = () => {
-    return fetch("http://localhost:3200/api/save", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(items),
-    }).then((response) => response.json());
-  };
 
   return (
     <div className="App">
@@ -84,7 +53,7 @@ function ArrangeImages() {
 
         <SortableGallery items={items} onSortEnd={onSortEnd} axis={"xy"} />
         <div className=" button-save btn btn-primary">
-          <button type="button" onClick={saveImages}>
+          <button type="button" onClick={() => saveSortedImages(items)}>
             Save sorted images
           </button>
         </div>
