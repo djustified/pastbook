@@ -90,7 +90,7 @@ function SelectImages() {
       return setItems(photoArray);
     });
     deleteExistingSelection();
-  }, [selectedItems]);
+  }, []);
 
   return (
     <div className="App">
